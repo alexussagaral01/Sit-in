@@ -82,5 +82,36 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     }
+
+    const editForm = document.getElementById("editForm");
+    if (editForm) {
+        editForm.addEventListener("submit", function (e) {
+            e.preventDefault(); 
+
+            let formData = new FormData(this);
+
+            fetch("edit.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    title: data.status === "success" ? "Success!" : "Error!",
+                    text: data.message,
+                    icon: data.status,
+                    showConfirmButton: true, 
+                    confirmButtonText: "Okay" 
+                }).then(() => {
+                    if (data.status === "success") {
+                        window.location.href = "profile.php";
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("Error:", error);  
+            });
+        });
+    }
 });
 

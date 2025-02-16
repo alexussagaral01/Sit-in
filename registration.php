@@ -81,8 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .w3-input {
             padding-right: 30px;
-            border-radius: 15px; /* Added border radius */
-            border: 1px solid black; /* Updated border color */
+            border-radius: 15px; 
+            border: 1px solid black;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="w3-display-container w3-animate-zoom">
-        <div class="w3-display-middle w3-card w3-light-grey w3-padding" style="max-width: 500px; width: 90%; padding: 30px; border-radius: 15px; border: 1px solid black; box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);">
+        <div class="w3-display-middle w3-card w3-white w3-padding" style="max-width: 500px; width: 90%; padding: 30px; border-radius: 15px; border: 1px solid black; box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);">
             <h2 class="w3-center" style="font-family: 'Roboto', sans-serif; font-weight: bold">Student Registration</h2>
             <form id="registerForm" method="POST" action="">
                 <div class="w3-margin-bottom">

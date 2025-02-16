@@ -1,28 +1,42 @@
 <?php
 session_start();
-require 'db.php';
+require 'db.php'; 
 
-$firstName = isset($_SESSION['first_name']) ? $_SESSION['first_name'] : 'Guest';
+
 $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 if ($userId) {
-    $stmt = $conn->prepare("SELECT UPLOAD_IMAGE FROM users WHERE STUD_NUM = ?");
+    $stmt = $conn->prepare("SELECT FIRST_NAME, MID_NAME, LAST_NAME, YEAR_LEVEL, COURSE, IDNO, EMAIL, ADDRESS, UPLOAD_IMAGE FROM users WHERE STUD_NUM = ?");
     $stmt->bind_param("i", $userId);
     $stmt->execute();
-    $stmt->bind_result($userImage);
+    $stmt->bind_result($firstName, $middleName, $lastName, $yearLevel, $course, $idNo, $email, $address, $userImage);
     $stmt->fetch();
     $stmt->close();
     
+    $fullName = $firstName;
+    if (!empty($middleName)) {
+        $fullName .= " " . $middleName;
+    }
+    $fullName .= " " . $lastName;
+
     $profileImage = !empty($userImage) ? $userImage : "images/image.jpg";
 } else {
+    $fullName = 'Guest';
+    $yearLevel = 'Unknown';
+    $course = 'Unknown';
+    $idNo = 'Unknown';
+    $email = 'Unknown';
+    $address = 'Unknown';
     $profileImage = "images/image.jpg";
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Dashboard</title>
@@ -170,6 +184,42 @@ if ($userId) {
             color: white; 
         }
 
+        .student-info {
+            background-color: white; 
+            border-radius: 15px;
+            padding: 20px; 
+            width: 500px; 
+            margin: 50px auto; 
+            text-align: center; 
+            font-family: 'Roboto', sans-serif; 
+            box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
+            border: 1px solid black;
+            transition: transform 0.3s;
+        }
+        .student-info:hover {
+            transform: scale(1.05)
+        }
+        .student-info h2 {
+            margin-bottom: 10px; 
+            font-size: 24px; 
+            font-weight: bold;
+        }
+        .student-info p {
+            margin: 5px 0; 
+            font-size: 18px; 
+        }
+        .student-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .student-info th, .student-info td {
+            text-align: left;
+            padding: 8px;
+        }
+        .student-info th {
+            width: 30%;
+        }
+
     </style>
 </head>
 <body>
@@ -194,6 +244,36 @@ if ($userId) {
         <div class="logout-section">
             <a href="login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
         </div>
+    </div>
+    <div class="student-info">
+        <img src="<?php echo htmlspecialchars($profileImage); ?>" alt="Student Image" style="width: 150px; height: auto; display: block; margin: 0 auto 20px; border: 1px solid black;">
+        <h2>Student Information</h2>
+        <table>
+            <tr>
+                <th>ID NUMBER:</th>
+                <td><?php echo htmlspecialchars($idNo); ?></td>
+            </tr>
+            <tr>
+                <th>NAME:</th>
+                <td><?php echo htmlspecialchars($fullName); ?></td>
+            </tr>
+            <tr>
+                <th>YEAR LEVEL:</th>
+                <td><?php echo htmlspecialchars($yearLevel); ?></td>
+            </tr>
+            <tr>
+                <th>COURSE:</th>
+                <td><?php echo htmlspecialchars($course); ?></td>
+            </tr>
+            <tr>
+                <th>EMAIL:</th>
+                <td><?php echo htmlspecialchars($email); ?></td>
+            </tr>
+            <tr>
+                <th>ADDRESS:</th>
+                <td><?php echo htmlspecialchars($address); ?></td>
+            </tr>
+        </table>
     </div>
     
     <script>

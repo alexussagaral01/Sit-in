@@ -7,16 +7,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['Username'];
     $password = $_POST['Password'];
 
-    $sql = "SELECT PASSWORD_HASH, FIRST_NAME FROM users WHERE USER_NAME = ?";
+    $sql = "SELECT STUD_NUM, PASSWORD_HASH, FIRST_NAME FROM users WHERE USER_NAME = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
-    $stmt->bind_result($password_hash, $first_name);
+    $stmt->bind_result($userId, $password_hash, $first_name);
     $stmt->fetch();
 
     header('Content-Type: application/json');
     if (password_verify($password, $password_hash)) {
-        $_SESSION['first_name'] = $first_name; // Store the user's first name in the session
+        $_SESSION['user_id'] = $userId; 
+        $_SESSION['first_name'] = $first_name; 
         echo json_encode(["status" => "success", "message" => "Login successful!"]);
     } else {
         echo json_encode(["status" => "error", "message" => "Invalid username or password."]);
@@ -113,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="w3-display-container w3-animate-zoom">
-        <div class="w3-display-middle w3-card w3-light-grey w3-padding" style="max-width: 500px; width: 90%; padding: 30px; border-radius: 15px; border: 1px solid black; box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);">
+        <div class="w3-display-middle w3-card w3-white w3-padding" style="max-width: 500px; width: 90%; padding: 30px; border-radius: 15px; border: 1px solid black; box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);">
             <div class="logo-container">
                 <img src="logo/uc.png" alt="Logo" class="logo">
                 <img src="logo/ccs.png" alt="Logo" class="logo">
