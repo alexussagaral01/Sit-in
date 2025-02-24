@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" href="logo/ccs.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Registration</title>
     <style>
         body {
@@ -86,6 +87,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 15px; 
             border: 1px solid black;
         }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-container i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: gray;
+        }
+
+        .input-container input,
+        .input-container select {
+            padding-left: 40px; /* Adjust padding to make space for the icon */
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="script.js" defer></script>
@@ -129,27 +147,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="w3-display-middle w3-card w3-white w3-padding" style="max-width: 500px; width: 90%; padding: 30px; border-radius: 15px; border: 1px solid black; box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);">
             <h2 class="w3-center" style="font-family: 'Roboto', sans-serif; font-weight: bold">Student Registration</h2>
             <form id="registerForm" method="POST" action="">
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-id-card"></i>
                     <label for="Idno"></label>
-                    <input type="text" id="Idno" name="Idno" class="w3-input w3-border w3-serif" placeholder="Idno" required>
+                    <input type="text" id="Idno" name="Idno" class="w3-input w3-border w3-serif" placeholder="Id Number" required>
                 </div>
 
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-user"></i>
                     <label for="Lastname"></label>
-                    <input type="text" id="Lastname" name="Lastname" class="w3-input w3-border w3-serif" placeholder="Lastname" required>
+                    <input type="text" id="Lastname" name="Lastname" class="w3-input w3-border w3-serif" placeholder="Last Name" required>
                 </div>
 
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-user"></i>
                     <label for="Firstname"></label>
-                    <input type="text" id="Firstname" name="Firstname" class="w3-input w3-border w3-serif" placeholder="Firstname" required>
+                    <input type="text" id="Firstname" name="Firstname" class="w3-input w3-border w3-serif" placeholder="First Name" required>
                 </div>
 
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-user"></i>
                     <label for="Midname"></label>
-                    <input type="text" id="Midname" name="Midname" class="w3-input w3-border w3-serif" placeholder="Midname">
+                    <input type="text" id="Midname" name="Midname" class="w3-input w3-border w3-serif" placeholder="Middle Name">
                 </div>
 
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-book"></i>
                     <label for="Course"></label>
                     <select id="Course" name="Course" class="w3-input w3-border w3-serif" required>
                         <option value="" disabled selected>Select a Course</option>
@@ -166,7 +189,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </select>
                 </div>
                 
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-graduation-cap"></i>
                     <label for="Year_Level"></label>
                     <select id="Year_Level" name="Year_Level" class="w3-input w3-border w3-serif" required>
                         <option value="" disabled selected>Select a Year Level</option>
@@ -177,12 +201,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </select>
                 </div>
 
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-user"></i>
                     <label for="Username"></label>
-                    <input type="text" id="Username" name="Username" class="w3-input w3-border w3-serif" placeholder="Username" required>
+                    <input type="text" id="Username" name="Username" class="w3-input w3-border w3-serif" placeholder="User Name" required>
                 </div>
 
-                <div class="w3-margin-bottom">
+                <div class="w3-margin-bottom input-container">
+                    <i class="fa fa-lock"></i>
                     <label for="Password"></label>
                     <input type="password" id="Password" name="Password" class="w3-input w3-border w3-serif" placeholder="Password" required>
                 </div>
