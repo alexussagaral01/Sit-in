@@ -171,22 +171,29 @@ if ($userId) {
             color: white; 
         }
 
-        .rules-container {
+        .rules-container, .announcement-container {
             background-color: white;
-            width: 80%;
+            width: 45%; /* Adjusted width to fit side by side */
             max-width: 500px;
-            margin: 30px 30px 30px auto; /* Changed from 'margin: 30px auto' to align to right */
+            margin: 30px; /* Adjusted margin */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             font-family: 'Roboto', sans-serif;
             max-height: 70vh;
             overflow-y: auto;
-            position: relative; /* Added for better positioning */
-            right: 20px; /* Added to give some space from the right edge */
+            position: relative; /* For better positioning */
         }
 
-        .rules-title {
+        .rules-container {
+            float: right; /* Align to right */
+        }
+
+        .announcement-container {
+            float: left; /* Align to left */
+        }
+
+        .rules-title, .announcement-title {
             background-color: #003d64;
             color: white;
             padding: 15px;
@@ -199,36 +206,14 @@ if ($userId) {
             letter-spacing: 2px;
         }
 
-        .rules-header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-top: 20px;
-        }
-
-        .rules-content {
+        .rules-content, .announcement-content {
             line-height: 1.6;
         }
 
-        .rules-content h2 {
-            color: #003d64;
-            margin-top: 20px;
+        .announcement-content {
+            text-align: center; /* Adjusted text alignment */
+            color: #666;
         }
-
-        .rules-content ol {
-            padding-left: 20px;
-        }
-
-        .rules-content li {
-            margin-bottom: 10px;
-        }
-
-        .disciplinary-action {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-left: 5px solid #003d64;
-        }
-
     </style>
 </head>
 <body>
@@ -255,6 +240,15 @@ if ($userId) {
         </div>
     </div>
     
+    <div class="announcement-container">
+        <div class="announcement-title">
+            Announcements
+        </div>
+        <div class="announcement-content">
+            <p>There are no announcements yet.</p>
+        </div>
+    </div>
+
     <div class="rules-container">
         <div class="rules-title">
             Rules and Regulations

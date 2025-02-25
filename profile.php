@@ -6,10 +6,10 @@ $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $firstName = isset($_SESSION['first_name']) ? $_SESSION['first_name'] : 'Guest';
 
 if ($userId) {
-    $stmt = $conn->prepare("SELECT IDNO, LAST_NAME, FIRST_NAME, MID_NAME, COURSE, YEAR_LEVEL, EMAIL, ADDRESS, UPLOAD_IMAGE FROM users WHERE STUD_NUM = ?");
+    $stmt = $conn->prepare("SELECT IDNO, LAST_NAME, FIRST_NAME, MID_NAME, COURSE, YEAR_LEVEL, EMAIL, ADDRESS, UPLOAD_IMAGE, SESSION FROM users WHERE STUD_NUM = ?");
     $stmt->bind_param("i", $userId);
     $stmt->execute();
-    $stmt->bind_result($idNo, $lastName, $dbFirstName, $midName, $course, $yearLevel, $email, $address, $userImage);
+    $stmt->bind_result($idNo, $lastName, $dbFirstName, $midName, $course, $yearLevel, $email, $address, $userImage, $session);
     $stmt->fetch();
     $stmt->close();
     
@@ -23,6 +23,7 @@ if ($userId) {
     $course = '';
     $email = '';
     $address = '';
+    $session = '';
 }
 ?> 
 
@@ -273,6 +274,10 @@ if ($userId) {
             <tr>
                 <th><i class="fas fa-home"></i> ADDRESS:</th>
                 <td><?php echo htmlspecialchars($address); ?></td>
+            </tr>
+            <tr>
+                <th><i class="fas fa-clock"></i> SESSION:</th>
+                <td><?php echo htmlspecialchars($session); ?></td>
             </tr>
         </table>
     </div>
