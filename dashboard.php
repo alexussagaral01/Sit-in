@@ -35,11 +35,13 @@ if ($userId) {
 
         .logo {
         width: 150px; 
-        height: auto;
+        height: 150px; 
         display: block;
         margin-left: auto;
         margin-right: auto;
         border: 1px solid black;
+        border-radius: 50%; 
+        object-fit: cover; 
         }
 
         .sidenav {
@@ -73,7 +75,7 @@ if ($userId) {
         }
 
         .sidenav a i {
-        font-size: 24px; 
+        font-size: 15px; 
         margin-right: 10px; 
         }
 
@@ -146,7 +148,7 @@ if ($userId) {
             background-color: white; 
             color: black; 
             font-family: 'Roboto', sans-serif;
-            font-size: 28px; 
+            font-size: 25px; 
             font-weight: bold; 
             padding: 10px; 
         }
@@ -173,24 +175,24 @@ if ($userId) {
 
         .rules-container, .announcement-container {
             background-color: white;
-            width: 45%; /* Adjusted width to fit side by side */
+            width: 45%; 
             max-width: 500px;
-            margin: 30px; /* Adjusted margin */
+            margin: 30px; 
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             font-family: 'Roboto', sans-serif;
             max-height: 70vh;
             overflow-y: auto;
-            position: relative; /* For better positioning */
+            position: relative; 
         }
 
         .rules-container {
-            float: right; /* Align to right */
+            float: right; 
         }
 
         .announcement-container {
-            float: left; /* Align to left */
+            float: left; 
         }
 
         .rules-title, .announcement-title {
@@ -206,13 +208,60 @@ if ($userId) {
             letter-spacing: 2px;
         }
 
+        .announcement-title::before, .rules-title::before {
+            content: '\f0a1'; 
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 10px;
+        }
+
+        .rules-title::before {
+            content: '\f02d'; 
+        }
+
         .rules-content, .announcement-content {
             line-height: 1.6;
         }
 
         .announcement-content {
-            text-align: center; /* Adjusted text alignment */
+            text-align: center; 
             color: #666;
+        }
+
+        .centered {
+            text-align: center;
+        }
+
+        .disciplinary-action {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .disciplinary-action h2 {
+            background-color: #003d64;
+            color: white;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: -20px -20px 20px -20px;
+        }
+
+        .disciplinary-action p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .disciplinary-action p strong {
+            color: #003d64;
         }
     </style>
 </head>
@@ -250,10 +299,10 @@ if ($userId) {
     </div>
 
     <div class="rules-container">
-        <div class="rules-title">
+        <div class="rules-title centered">
             Rules and Regulations
         </div>
-        <div class="rules-header">
+        <div class="rules-header centered">
             <h1>University of Cebu</h1>
             <h2>COLLEGE OF INFORMATION & COMPUTER STUDIES</h2>
             <h3>LABORATORY RULES AND REGULATIONS</h3>

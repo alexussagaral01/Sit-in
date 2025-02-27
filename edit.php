@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['Email'];
     $address = $_POST['Address'];
     
-    $uploadImagePath = $userImage; // Keep existing image by default
+    $uploadImagePath = $userImage; 
     if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] == 0) {
         $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if (in_array($fileType, $allowedTypes)) {
             $targetDir = "images/";
-            // Generate unique filename
+            
             $fileName = uniqid() . '_' . basename($_FILES["profileImage"]["name"]);
             $targetFile = $targetDir . $fileName;
             
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if (move_uploaded_file($_FILES["profileImage"]["tmp_name"], $targetFile)) {
                 $uploadImagePath = $fileName;
-                $_SESSION['profile_image'] = $targetFile; // Save image path in session
+                $_SESSION['profile_image'] = $targetFile; 
             } else {
                 echo json_encode([
                     "status" => "error",
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        // Update user information in the database
+       
         $stmt = $conn->prepare("UPDATE users SET IDNO = ?, LAST_NAME = ?, FIRST_NAME = ?, MID_NAME = ?, COURSE = ?, YEAR_LEVEL = ?, EMAIL = ?, ADDRESS = ?, UPLOAD_IMAGE = ? WHERE STUD_NUM = ?");
         $stmt->bind_param("issssssssi", $idno, $lastname, $firstname, $midname, $course, $year_level, $email, $address, $uploadImagePath, $userId);
         
@@ -111,102 +111,105 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Edit</title>
     <style>
         body {
-        background-image: linear-gradient(104.1deg, rgba(0,61,100,1) 13.6%, rgba(47,127,164,1) 49.4%, rgba(30,198,198,1) 93.3%);
-        background-attachment: fixed;
+            background-image: linear-gradient(104.1deg, rgba(0,61,100,1) 13.6%, rgba(47,127,164,1) 49.4%, rgba(30,198,198,1) 93.3%);
+            background-attachment: fixed;
+            font-family: 'Roboto', sans-serif; 
         }
 
-        .logo {
-        width: 150px; 
-        height: auto;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        border: 1px solid black;
+        .logo, .profile-image {
+            width: 150px; 
+            height: 150px; 
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid black;
+            border-radius: 50%; 
+            object-fit: cover; 
         }
 
         .sidenav {
-        height: 100%;
-        width: 250px;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: -250px;
-        background-color: white; 
-        overflow-x: hidden;
-        padding-top: 20px;
-        font-family: 'Roboto', sans-serif;
-        font-size: 18px;
-        transition: 0.3s;
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: -250px;
+            background-color: white; 
+            overflow-x: hidden;
+            padding-top: 20px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            transition: 0.3s;
         }
 
         .sidenav.show {
-        left: 0;
+            left: 0;
         }
 
         .sidenav a {
-        padding: 8px 8px 8px 16px;
-        text-decoration: none;
-        font-size: 15px;
-        color: black; 
-        display: flex;
-        align-items: center;
-        position: relative;
-        padding-left: 16px; 
+            padding: 8px 8px 8px 16px;
+            text-decoration: none;
+            font-size: 15px;
+            color: black; 
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 16px; 
         }
 
         .sidenav a i {
-        font-size: 24px; 
-        margin-right: 10px; 
+            font-size: 15px; 
+            margin-right: 10px; 
         }
 
         .sidenav a:hover {
-        background-color: black; 
-        color: white; 
-        transform: scale(1.05); 
-        transition: transform 0.3s, background-color 0.3s, color 0.3s; 
+            background-color: black; 
+            color: white; 
+            transform: scale(1.05); 
+            transition: transform 0.3s, background-color 0.3s, color 0.3s; 
         }
 
         .sidenav a:hover i {
-        color: white; 
+            color: white; 
         }
 
         .sidenav a::before {
-        content: '';
-        position: absolute;
-        left: -10px; 
-        top: 0;
-        bottom: 0;
-        width: 5px; 
-        background-color: transparent;
-        transition: background-color 0.3s;
+            content: '';
+            position: absolute;
+            left: -10px; 
+            top: 0;
+            bottom: 0;
+            width: 5px; 
+            background-color: transparent;
+            transition: background-color 0.3s;
         }
 
         .sidenav a:hover::before {
-        background-color: black; 
+            background-color: black; 
         }
 
         .user-name {
-        color: #000; 
-        text-align: center;
-        font-family: 'Roboto', sans-serif;
-        font-size: 22px;
-        font-weight: bold; 
+            color: #000; 
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            font-size: 22px;
+            font-weight: bold; 
         }
 
         .container {
-        display: inline-block;
-        cursor: pointer;
-        position: absolute;
-        top: 15px; 
-        left: 25px; 
+            display: inline-block;
+            cursor: pointer;
+            position: absolute;
+            top: 15px; 
+            left: 25px; 
         }
 
         .bar1, .bar2, .bar3 {
-        width: 35px;
-        height: 5px;
-        background-color: black; 
-        margin: 6px 0;
-        transition: 0.4s;
+            width: 35px;
+            height: 5px;
+            background-color: black; 
+            margin: 6px 0;
+            transition: 0.4s;
         }
 
         .closebtn {
@@ -228,7 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-color: white; 
             color: black; 
             font-family: 'Roboto', sans-serif;
-            font-size: 28px; 
+            font-size: 25px; 
             font-weight: bold; 
             padding: 10px; 
         }
@@ -257,7 +260,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 50px; /* Add top margin */
+            margin-top: 50px; 
         }
 
         .card {
@@ -268,12 +271,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
             max-width: 500px;
             width: 90%;
+            font-family: 'Roboto', sans-serif; 
         }
 
         .card h2 {
+            background-color: #003d64;
+            color: white;
+            padding: 15px;
+            margin: -15px -15px 15px -15px;
+            border-radius: 15px 15px 0 0; 
             text-align: center;
+            font-size: 24px;
             font-weight: bold;
-            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .card input, .card select {
@@ -282,27 +293,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 10px 0;
             border-radius: 15px;
             border: 1px solid black;
-            box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+            box-sizing: border-box; 
         }
 
         .card button {
             background-image: linear-gradient(104.1deg, rgba(0,61,100,1) 13.6%, rgba(47,127,164,1) 49.4%, rgba(30,198,198,1) 93.3%);
             color: white;
             border: none;
-            padding: 10px 20px; /* Adjust padding */
+            padding: 10px 20px; 
             text-align: center;
             text-decoration: none;
-            display: block; /* Change to block */
-            font-size: 16px; /* Adjust font size */
-            margin: 20px auto; /* Center the button */
+            display: block; 
+            font-size: 16px; 
+            margin: 20px auto; 
             cursor: pointer;
             border-radius: 12px;
-            width: auto; /* Adjust width */
+            width: auto; 
         }
 
         .card button:hover {
             background-image: linear-gradient(104.1deg, rgba(30,198,198,1) 13.6%, rgba(47,127,164,1) 49.4%, rgba(0,61,100,1) 93.3%);
-            color: black; /* Change font color on hover */
+            color: black; 
         }
 
         input:focus::placeholder {

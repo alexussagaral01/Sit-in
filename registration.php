@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $year_level = $_POST['Year_Level'];
     $username = $_POST['Username'];
     $password = password_hash($_POST['Password'], PASSWORD_DEFAULT);
-    $defaultImage = 'image.jpg'; // Default image for new users
+    $defaultImage = 'image.jpg'; 
 
     $sql = "INSERT INTO users (IDNO, LAST_NAME, FIRST_NAME, MID_NAME, COURSE, YEAR_LEVEL, USER_NAME, PASSWORD_HASH, UPLOAD_IMAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
@@ -102,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .input-container input,
         .input-container select {
-            padding-left: 40px; /* Adjust padding to make space for the icon */
+            padding-left: 40px; 
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

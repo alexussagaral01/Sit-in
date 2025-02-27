@@ -42,13 +42,15 @@ if ($userId) {
         background-attachment: fixed;
         }
 
-        .logo {
+        .logo, .student-info img {
         width: 150px; 
-        height: auto;
+        height: 150px; 
         display: block;
         margin-left: auto;
         margin-right: auto;
         border: 1px solid black;
+        border-radius: 50%; 
+        object-fit: cover; 
         }
 
         .sidenav {
@@ -82,7 +84,7 @@ if ($userId) {
         }
 
         .sidenav a i {
-        font-size: 24px; 
+        font-size: 15px; 
         margin-right: 10px; 
         }
 
@@ -155,7 +157,7 @@ if ($userId) {
             background-color: white; 
             color: black; 
             font-family: 'Roboto', sans-serif;
-            font-size: 28px; 
+            font-size: 25px; 
             font-weight: bold; 
             padding: 10px; 
         }
@@ -184,7 +186,8 @@ if ($userId) {
             background-color: white; 
             border-radius: 15px;
             padding: 10px; 
-            width: 400px; 
+            width: 100%; 
+            max-width: 400px; 
             margin: 50px auto; 
             text-align: center; 
             font-family: 'Roboto', sans-serif; 
@@ -196,9 +199,16 @@ if ($userId) {
             transform: scale(1.05)
         }
         .student-info h2 {
-            margin-bottom: 10px; 
-            font-size: 24px; 
+            background-color: #003d64;
+            color: white;
+            padding: 15px;
+            margin: -10px -10px 10px -10px;
+            border-radius: 15px 15px 0 0; 
+            text-align: center;
+            font-size: 24px;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         .student-info p {
             margin: 5px 0; 
