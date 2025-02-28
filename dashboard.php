@@ -241,27 +241,11 @@ if ($userId) {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .disciplinary-action h2 {
-            background-color: #003d64;
-            color: white;
-            padding: 10px;
-            border-radius: 10px 10px 0 0;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: -20px -20px 20px -20px;
-        }
-
-        .disciplinary-action p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .disciplinary-action p strong {
-            color: #003d64;
+        .disciplinary-action {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #003d64;
         }
     </style>
 </head>
