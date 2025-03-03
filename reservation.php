@@ -31,6 +31,8 @@ if ($userId) {
         body {
         background-image: linear-gradient(104.1deg, rgba(0,61,100,1) 13.6%, rgba(47,127,164,1) 49.4%, rgba(30,198,198,1) 93.3%);
         background-attachment: fixed;
+        font-family: 'Roboto', sans-serif;
+        color: black; /* Set font color to black */
         }
 
         .logo {
@@ -172,6 +174,118 @@ if ($userId) {
         .logout-section a:hover i {
             color: white; 
         }
+
+        /* Reservation Form Styles */
+        .reservation-container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .reservation-title {
+            background-color: #003d64;
+            color: white;
+            padding: 15px;
+            margin: -20px -20px 20px -20px; /* Adjusted to match your container's padding */
+            border-radius: 8px 8px 0 0; 
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-family: 'Roboto', sans-serif; /* Set font family to Roboto */
+            color: black; /* Set font color to black */
+        }
+
+        .form-group label {
+            width: 150px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            width: 100%;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-reserve {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .btn-reserve:hover {
+            background-color: #0056b3;
+        }
+
+        /* Special styling for date and time inputs */
+        input[type="date"], input[type="time"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            padding: 10px;
+            width: 100%;
+        }
+
+        /* Hide default date and time icons */
+        input::-webkit-calendar-picker-indicator {
+            opacity: 1;
+            display: block;
+            float: right;
+            cursor: pointer;
+        }
+
+        /* Custom placeholder for date and time */
+        .time-placeholder::before {
+            content: "--:-- --";
+            color: #777;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .date-placeholder::before {
+            content: "dd/mm/yyyy";
+            color: #777;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        /* Success message */
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -196,17 +310,93 @@ if ($userId) {
         <div class="logout-section">
             <a href="login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
         </div>
-    </div>    
+    </div>
+
+    <div class="reservation-container">
+        <div class="reservation-title">Reservation</div>
+        <form action="reservation.php" method="post">
+            <div class="form-group">
+                <label for="id_number">ID Number:</label>
+                <input type="text" id="id_number" name="id_number" value="22680649" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="student_name">Student Name:</label>
+                <input type="text" id="student_name" name="student_name" value="Alexus Jamilo Sagaral" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="purpose">Purpose:</label>
+                <input type="text" id="purpose" name="purpose" placeholder="C Programming" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="lab">Lab:</label>
+                <input type="text" id="lab" name="lab" placeholder="524" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="time_in">Time In:</label>
+                <input type="text" id="time_in" name="time_in" placeholder="--:-- --" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="text" id="date" name="date" placeholder="dd/mm/yyyy" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="remaining_session">Remaining Session:</label>
+                <input type="text" id="remaining_session" name="remaining_session" value="30" class="form-control">
+            </div>
+            
+            <div class="button-group">
+                <button type="button" class="btn-reserve" style="margin: 0 auto;">Reserve</button>
+            </div>
+        </form>
+    </div>
+    
     <script>
         function toggleNav(x) {
-        x.classList.toggle("change");
-        document.getElementById("mySidenav").classList.toggle("show");
+            x.classList.toggle("change");
+            document.getElementById("mySidenav").classList.toggle("show");
         }
 
         function closeNav() {
             document.getElementById("mySidenav").classList.remove("show");
             document.querySelector(".container").classList.remove("change");
         }
+
+        // Add date and time pickers with custom formatting
+        document.addEventListener('DOMContentLoaded', function() {
+            // Time picker setup
+            const timeInput = document.getElementById('time_in');
+            timeInput.addEventListener('focus', function() {
+                // Convert text input to time input on focus
+                this.type = 'time';
+            });
+            
+            timeInput.addEventListener('blur', function() {
+                // If no value is selected, convert back to text
+                if (!this.value) {
+                    this.type = 'text';
+                }
+            });
+            
+            // Date picker setup
+            const dateInput = document.getElementById('date');
+            dateInput.addEventListener('focus', function() {
+                // Convert text input to date input on focus
+                this.type = 'date';
+            });
+            
+            dateInput.addEventListener('blur', function() {
+                // If no value is selected, convert back to text
+                if (!this.value) {
+                    this.type = 'text';
+                }
+            });
+        });
     </script>
 </body>
 </html>

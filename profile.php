@@ -194,6 +194,7 @@ if ($userId) {
             box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
             border: 1px solid black;
             transition: transform 0.3s;
+            max-width: 500px;
         }
         .student-info:hover {
             transform: scale(1.05)

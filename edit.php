@@ -269,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 15px;
             border: 1px solid black;
             box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
             font-family: 'Roboto', sans-serif; 
         }
