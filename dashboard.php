@@ -265,8 +265,8 @@ if ($userId) {
         <a href="dashboard.php"><i class="fas fa-home"></i> HOME</a>
         <a href="profile.php"><i class="fas fa-user"></i> PROFILE</a>
         <a href="edit.php"><i class="fas fa-edit"></i> EDIT</a>
-        <a href="#"><i class="fas fa-history"></i> HISTORY</a>
-        <a href="#"><i class="fas fa-calendar-alt"></i> RESERVATION</a>
+        <a href="history.php"><i class="fas fa-history"></i> HISTORY</a>
+        <a href="reservation.php"><i class="fas fa-calendar-alt"></i> RESERVATION</a>
 
         <div class="logout-section">
             <a href="login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
