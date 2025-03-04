@@ -53,7 +53,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     confirmButtonText: "Okay" 
                 }).then((result) => {
                     if (result.isConfirmed && data.status === "success") {
-                        window.location.href = "dashboard.php";  
+                        if (formData.get('Username') === 'admin') {
+                            window.location.href = "admin_dashboard.php";  
+                        } else {
+                            window.location.href = "dashboard.php";  
+                        }
                     }
                 });
             })

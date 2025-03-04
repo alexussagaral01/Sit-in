@@ -7,6 +7,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['Username'];
     $password = $_POST['Password'];
 
+    // Check if admin is logging in
+    if ($username === 'admin' && $password === 'admin') {
+        $_SESSION['admin'] = true;
+        echo json_encode(["status" => "success", "message" => "Admin login successful!"]);
+        exit;
+    }
+
     $sql = "SELECT STUD_NUM, PASSWORD_HASH, FIRST_NAME FROM users WHERE USER_NAME = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
