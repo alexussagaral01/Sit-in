@@ -1,7 +1,31 @@
 <?php
 session_start();
+require '../db.php'; // Add database connection
+
 $firstName = isset($_SESSION['admin']) && $_SESSION['admin'] === true ? 'Admin' : (isset($_SESSION['first_name']) ? $_SESSION['first_name'] : 'Guest');
 $profileImage = isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] : '../images/image.jpg';
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_announcement'])) {
+    $content = $_POST['new_announcement'];
+    $createdBy = 'ADMIN';
+
+    $stmt = $conn->prepare("INSERT INTO announcement (CONTENT, CREATED_DATE, CREATED_BY) VALUES (?, NOW(), ?)");
+    $stmt->bind_param("ss", $content, $createdBy);
+    $stmt->execute();
+    $stmt->close();
+    
+    // Redirect to refresh the page and prevent form resubmission
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Fetch announcements from the database
+$announcements = [];
+$result = $conn->query("SELECT CONTENT, CREATED_DATE, CREATED_BY FROM announcement WHERE CREATED_BY = 'ADMIN' ORDER BY CREATED_DATE DESC");
+while ($row = $result->fetch_assoc()) {
+    $announcements[] = $row;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +34,7 @@ $profileImage = isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] :
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="icon" href="logo/ccs.png" type="image/x-icon">
+    <link rel="icon" href="../logo/ccs.png" type="image/x-icon">
     <title>Admin Dashboard</title>
     <style>
         body {
@@ -164,7 +188,7 @@ $profileImage = isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] :
             margin-right: 20px;
             margin-top: 50px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end; /* Align items to the right */
             flex-wrap: wrap;
         }
 
@@ -177,46 +201,52 @@ $profileImage = isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] :
             overflow: hidden;
         }
 
-        .card-header {
-            background-color: #007bff;
+        .card-header.announcement-header {
+            background-color: #003865; /* Dark blue color similar to your image */
             color: white;
-            padding: 10px 15px;
+            padding: 12px 15px;
             font-family: 'Roboto', sans-serif;
             font-weight: bold;
             display: flex;
             align-items: center;
+            font-size: 24px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .card-header i {
-            margin-right: 10px;
+        margin-right: 10px;
         }
 
         .card-body {
-            padding: 15px;
+        padding: 15px;
         }
 
         .stats-item {
-            margin-bottom: 10px;
-            font-family: 'Roboto', sans-serif;
+        margin-bottom: 10px;
+        font-family: 'Roboto', sans-serif;
         }
 
         .chart-container {
-            width: 100%;
-            height: 300px;
+        width: 100%;
+        height: 300px;
         }
 
         .announcement-form {
-            margin-bottom: 20px;
+        margin-bottom: 20px;
+        width: 100%; /* Ensure the form takes full width of parent */
         }
 
         .announcement-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
-            min-height: 100px;
-            font-family: 'Roboto', sans-serif;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+        min-height: 100px;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box; /* This is the key fix - it includes padding in width calculation */
+        max-width: 100%; /* Ensures it doesn't exceed parent width */
         }
 
         .announcement-form .btn-submit {
@@ -231,30 +261,40 @@ $profileImage = isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] :
         }
 
         .announcement-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 10px;
+        background-color: #f9f9f9;
+    }
+    
+    .announcement-item {
+        border-bottom: 1px solid #ddd;
+        padding: 12px 0;
+        margin-bottom: 5px;
+    }
+    
+    .announcement-header {
+        font-weight: bold;
+        color: #003865;
+        margin-bottom: 8px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+    }
+    
+    .announcement-text {
+        font-family: 'Roboto', sans-serif;
+        margin-bottom: 8px;
+        line-height: 1.4;
+        padding-left: 10px; /* Indentation for the announcement text */
+    }
 
-        .announcement-item {
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
-        }
-
-        .announcement-header {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .announcement-text {
-            font-family: 'Roboto', sans-serif;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-card {
+     @media (max-width: 768px) {
+        .dashboard-card {
                 width: 100%;
             }
-        }
+    }
     </style>
 </head>   
 <body>
@@ -286,58 +326,35 @@ $profileImage = isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] :
 
     <!-- Dashboard Content -->
     <div class="dashboard-content">
-        <!-- Statistics Card -->
-        <div class="dashboard-card">
-            <div class="card-header">
-                <i class="fas fa-chart-bar"></i> Statistics
-            </div>
-            <div class="card-body">
-                <div class="stats-item">
-                    <strong>Students Registered:</strong> 272
-                </div>
-                <div class="stats-item">
-                    <strong>Currently Sit-in:</strong> 3
-                </div>
-                <div class="stats-item">
-                    <strong>Total Sit-in:</strong> 195
-                </div>
-                <div class="chart-container">
-                    <canvas id="languageChart"></canvas>
-                </div>
-            </div>
-        </div>
-
         <!-- Announcements Card -->
         <div class="dashboard-card">
-            <div class="card-header">
-                <i class="fas fa-bullhorn"></i> Announcement
+            <div class="card-header announcement-header">
+                <i class="fas fa-bullhorn"></i> Announcements
             </div>
             <div class="card-body">
                 <div class="announcement-form">
                     <form action="" method="post">
-                        <textarea name="new_announcement" placeholder="New Announcement"></textarea>
-                        <button type="submit" class="btn-submit">Submit</button>
+                        <textarea name="new_announcement" placeholder="Type your announcement here..." required></textarea>
+                        <button type="submit" class="btn-submit">Post Announcement</button>
                     </form>
                 </div>
 
-                <h3>Posted Announcement</h3>
+                <h3 style="font-family: 'Roboto', sans-serif;">Posted Announcements</h3>
                 <div class="announcement-list">
-                    <div class="announcement-item">
-                        <div class="announcement-header">CCS Admin | 2025-Mar-05</div>
-                        <div class="announcement-text">dasdasd</div>
-                    </div>
-                    <div class="announcement-item">
-                        <div class="announcement-header">CCS Admin | 2025-Mar-05</div>
-                        <div class="announcement-text">dasdasd</div>
-                    </div>
-                    <div class="announcement-item">
-                        <div class="announcement-header">CCS Admin | 2025-Feb-25</div>
-                        <div class="announcement-text">UC did it again.</div>
-                    </div>
-                    <div class="announcement-item">
-                        <div class="announcement-header">CCS Admin | 2025-Feb-03</div>
-                        <div class="announcement-text">The College of Computer Studies will open the registration of students for the Sit-in privilege starting tomorrow. Thank you! Lab Supervisor</div>
-                    </div>
+                    <?php if (empty($announcements)): ?>
+                        <p>No announcements available.</p>
+                    <?php else: ?>
+                        <?php foreach ($announcements as $announcement): ?>
+                            <div class="announcement-item">
+                                <div class="announcement-header">
+                                    <?php echo htmlspecialchars($announcement['CREATED_BY']); ?> | <?php echo date('Y-M-d', strtotime($announcement['CREATED_DATE'])); ?>
+                                </div>
+                                <div class="announcement-text">
+                                    <?php echo htmlspecialchars($announcement['CONTENT']); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -354,37 +371,6 @@ $profileImage = isset($_SESSION['profile_image']) ? $_SESSION['profile_image'] :
             document.getElementById("mySidenav").classList.remove("show");
             document.querySelector(".container").classList.remove("change");
         }
-
-        // Chart.js code for the pie chart
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('languageChart').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['C#', 'C', 'Java', 'ASP.Net', 'PHP'],
-                    datasets: [{
-                        data: [10, 60, 15, 10, 5],
-                        backgroundColor: [
-                            '#36a2eb',
-                            '#ff6384',
-                            '#ffcd56',
-                            '#ff9f40',
-                            '#4bc0c0'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        }
-                    }
-                }
-            });
-        });
     </script>
 </body>
 </html>

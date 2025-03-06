@@ -17,6 +17,13 @@ if ($userId) {
 } else {
     $profileImage = "../images/image.jpg";
 }
+
+// Fetch announcements from the database
+$announcements = [];
+$result = $conn->query("SELECT CONTENT, CREATED_DATE, CREATED_BY FROM announcement WHERE CREATED_BY = 'ADMIN' ORDER BY CREATED_DATE DESC");
+while ($row = $result->fetch_assoc()) {
+    $announcements[] = $row;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -224,8 +231,8 @@ if ($userId) {
         }
 
         .announcement-content {
-            text-align: center; 
-            color: #666;
+            text-align: left; 
+            color: black;
         }
 
         .centered {
@@ -246,6 +253,36 @@ if ($userId) {
             padding: 15px;
             background-color: #f8f9fa;
             border-left: 5px solid #003d64;
+        }
+        
+        .announcement-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        
+        .announcement-item {
+            border-bottom: 1px solid #ddd;
+            padding: 12px 0;
+            margin-bottom: 5px;
+        }
+        
+        .announcement-header {
+            font-weight: bold;
+            color: #003865;
+            margin-bottom: 8px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+        }
+        
+        .announcement-text {
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            padding-left: 10px;
         }
     </style>
 </head>
@@ -278,7 +315,22 @@ if ($userId) {
             Announcements
         </div>
         <div class="announcement-content">
-            <p>There are no announcements yet.</p>
+            <?php if (empty($announcements)): ?>
+                <p>There are no announcements yet.</p>
+            <?php else: ?>
+                <div class="announcement-list">
+                    <?php foreach ($announcements as $announcement): ?>
+                        <div class="announcement-item">
+                            <div class="announcement-header">
+                                ADMIN | <?php echo date('Y-M-d', strtotime($announcement['CREATED_DATE'])); ?>
+                            </div>
+                            <div class="announcement-text">
+                                <?php echo htmlspecialchars($announcement['CONTENT']); ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -335,6 +387,27 @@ if ($userId) {
             document.getElementById("mySidenav").classList.remove("show");
             document.querySelector(".container").classList.remove("change");
         }
+
+        // Add this to your existing script section
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all announcement items
+            const announcements = document.querySelectorAll('.announcement-item');
+            
+            // Check if there are announcements
+            if (announcements.length > 0) {
+                // Add the "new" class to the most recent announcement
+                announcements[0].classList.add('new');
+                
+                // Format dates to be more readable
+                document.querySelectorAll('.announcement-date').forEach(function(dateElement) {
+                    const date = new Date(dateElement.textContent);
+                    if(!isNaN(date.getTime())) {
+                        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                        dateElement.textContent = date.toLocaleDateString('en-US', options);
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

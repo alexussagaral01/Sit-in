@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 06, 2025 at 04:59 AM
+-- Generation Time: Mar 06, 2025 at 01:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,10 +41,10 @@ CREATE TABLE `admin` (
 
 CREATE TABLE `announcement` (
   `ID` int(11) NOT NULL,
-  `ANNOUNCEMENT` varchar(255) NOT NULL,
+  `TITLE` varchar(255) NOT NULL,
   `CONTENT` text NOT NULL,
   `CREATED_DATE` date NOT NULL,
-  `CREATED_BY` varchar(20) NOT NULL DEFAULT 'ADMIN'
+  `CREATED_BY` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
