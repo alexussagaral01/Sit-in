@@ -54,9 +54,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 }).then((result) => {
                     if (result.isConfirmed && data.status === "success") {
                         if (formData.get('Username') === 'admin') {
-                            window.location.href = "admin_dashboard.php";  
+                            window.location.href = "admin/admin_dashboard.php";  
                         } else {
-                            window.location.href = "dashboard.php";  
+                            window.location.href = "user/dashboard.php";  
                         }
                     }
                 });
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    const logoutLink = document.querySelector("a[href='login.php']");
+    const logoutLink = document.querySelector("a[href='../login.php']");
     if (logoutLink) {
         logoutLink.addEventListener("click", function(e) {
             e.preventDefault();
@@ -133,6 +133,28 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => {
                 console.error("Error:", error);  
             });
+        });
+    }
+
+    // Password visibility toggle for registration form
+    const registerPasswordToggle = document.getElementById("registerPasswordToggle");
+    const registerPasswordInput = document.getElementById("registerPassword");
+    if (registerPasswordToggle && registerPasswordInput) {
+        registerPasswordToggle.addEventListener("click", function() {
+            const type = registerPasswordInput.getAttribute("type") === "password" ? "text" : "password";
+            registerPasswordInput.setAttribute("type", type);
+            this.classList.toggle("fa-eye-slash");
+        });
+    }
+
+    // Password visibility toggle for login form
+    const loginPasswordToggle = document.getElementById("loginPasswordToggle");
+    const loginPasswordInput = document.getElementById("loginPassword");
+    if (loginPasswordToggle && loginPasswordInput) {
+        loginPasswordToggle.addEventListener("click", function() {
+            const type = loginPasswordInput.getAttribute("type") === "password" ? "text" : "password";
+            loginPasswordInput.setAttribute("type", type);
+            this.classList.toggle("fa-eye-slash");
         });
     }
 });

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2025 at 04:25 AM
+-- Generation Time: Mar 06, 2025 at 04:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,6 +36,20 @@ CREATE TABLE `admin` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `announcement`
+--
+
+CREATE TABLE `announcement` (
+  `ID` int(11) NOT NULL,
+  `ANNOUNCEMENT` varchar(255) NOT NULL,
+  `CONTENT` text NOT NULL,
+  `CREATED_DATE` date NOT NULL,
+  `CREATED_BY` varchar(20) NOT NULL DEFAULT 'ADMIN'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -56,6 +70,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`STUD_NUM`, `IDNO`, `LAST_NAME`, `FIRST_NAME`, `MID_NAME`, `COURSE`, `YEAR_LEVEL`, `USER_NAME`, `PASSWORD_HASH`, `UPLOAD_IMAGE`, `EMAIL`, `ADDRESS`, `SESSION`) VALUES
+(1, 22680649, 'Sagaral', 'Alexus Sundae', 'Jamilo', 'BS IN INFORMATION TECHNOLOGY', '3rd Year', 'alexus123', '$2y$10$0YT1OIVzEl/DMSkZlEa90et4KhbVxQfpbpSYnT7WnhY0mQ75Yl7Uq', 0x363763363831346131343834355f363762363164653731383739645f3437333031303239345f3539353133333735363436333136355f373134393832313131373437373839303134305f6e202831292e6a7067, 'alexussagaral3@gmail.com', '1101 Andres Abellana Brgy. Guadaluper Cebu City', 30);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -64,6 +85,12 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`ADMIN_ID`);
+
+--
+-- Indexes for table `announcement`
+--
+ALTER TABLE `announcement`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `users`
@@ -82,10 +109,16 @@ ALTER TABLE `admin`
   MODIFY `ADMIN_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `announcement`
+--
+ALTER TABLE `announcement`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `STUD_NUM` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `STUD_NUM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

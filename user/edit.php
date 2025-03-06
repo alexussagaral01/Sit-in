@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php';
+require '../db.php';
 
 $firstName = isset($_SESSION['first_name']) ? $_SESSION['first_name'] : 'Guest';
 $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
@@ -13,9 +13,9 @@ if ($userId) {
     $stmt->fetch();
     $stmt->close();
     
-    $profileImage = !empty($userImage) ? 'images/' . $userImage : "images/image.jpg";
+    $profileImage = !empty($userImage) ? '../images/' . $userImage : "../images/image.jpg";
 } else {
-    $profileImage = "images/image.jpg";
+    $profileImage = "../images/image.jpg";
     $idNo = '';
     $lastName = '';
     $dbFirstName = '';
@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="script.js"></script>
-    <link rel="icon" href="logo/ccs.png" type="image/x-icon">
+    <link rel="icon" href="../logo/ccs.png" type="image/x-icon">
     <title>Edit</title>
     <style>
         body {
@@ -360,6 +360,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: 1px solid black;
             box-sizing: border-box;
         }
+        .readonly-input {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -382,7 +386,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="reservation.php"><i class="fas fa-calendar-alt"></i> RESERVATION</a>
 
         <div class="logout-section">
-            <a href="logout.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
+            <a href="../login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
         </div>
     </div>
 
@@ -394,7 +398,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <form id="editForm" method="POST" action="">
                 <div class="input-container">
                     <i class="fas fa-id-card"></i>
-                    <input type="text" id="Idno" name="Idno" placeholder="ID Number" value="<?php echo htmlspecialchars($idNo); ?>" required>
+                    <input type="text" id="Idno" name="Idno" placeholder="ID Number" value="<?php echo htmlspecialchars($idNo); ?>" readonly class="readonly-input">
                 </div>
                 <div class="input-container">
                     <i class="fas fa-user"></i>
@@ -476,7 +480,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (logoutLink) {
                 logoutLink.addEventListener("click", function(e) {
                     e.preventDefault();
-                    fetch("logout.php", {
+                    fetch("../login.php", {
                         method: "POST"
                     })
                     .then(response => {

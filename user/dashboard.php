@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php';
+require '../db.php'; // Updated path
 
 $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $firstName = isset($_SESSION['first_name']) ? $_SESSION['first_name'] : 'Guest';
@@ -13,9 +13,9 @@ if ($userId) {
     $stmt->fetch();
     $stmt->close();
     
-    $profileImage = !empty($userImage) ? 'images/' . $userImage : "images/image.jpg";
+    $profileImage = !empty($userImage) ? '../images/' . $userImage : "../images/image.jpg";
 } else {
-    $profileImage = "images/image.jpg";
+    $profileImage = "../images/image.jpg";
 }
 ?>
 <!DOCTYPE html>
@@ -25,8 +25,8 @@ if ($userId) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="icon" href="logo/ccs.png" type="image/x-icon">
-    <title>History</title>
+    <link rel="icon" href="../logo/ccs.png" type="image/x-icon"> <!-- Updated path -->
+    <title>Dashboard</title>
     <style>
         body {
         background-image: linear-gradient(104.1deg, rgba(0,61,100,1) 13.6%, rgba(47,127,164,1) 49.4%, rgba(30,198,198,1) 93.3%);
@@ -173,141 +173,79 @@ if ($userId) {
             color: white; 
         }
 
-        /* New styles for history table */
-        .content-container {
-            width: 90%;
-            margin: 30px auto;
+        .rules-container, .announcement-container {
             background-color: white;
+            width: 45%; 
+            max-width: 500px;
+            margin: 30px; 
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-family: 'Roboto', sans-serif;
+            max-height: 70vh;
+            overflow-y: auto;
+            position: relative; 
         }
 
-        .history-header {
+        .rules-container {
+            float: right; 
+        }
+
+        .announcement-container {
+            float: left; 
+        }
+
+        .rules-title, .announcement-title {
             background-color: #003d64;
             color: white;
             padding: 15px;
-            margin: -20px -20px 20px -20px; /* Adjusted to match your container's padding */
-            border-radius: 8px 8px 0 0; 
+            margin: -20px -20px 20px -20px;
+            border-radius: 10px 10px 0 0;
             text-align: center;
             font-size: 24px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
-            font-family: 'Roboto', sans-serif;
         }
 
-        .table-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: center;
+        .announcement-title::before, .rules-title::before {
+            content: '\f0a1'; 
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 10px;
         }
 
-        .entries-select {
-            display: flex;
-            align-items: center;
+        .rules-title::before {
+            content: '\f02d'; 
         }
 
-        .entries-select select {
-            margin: 0 5px;
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
+        .rules-content, .announcement-content {
+            line-height: 1.6;
         }
 
-        .search-box {
-            display: flex;
-            align-items: center;
+        .announcement-content {
+            text-align: center; 
+            color: #666;
         }
 
-        .search-box input {
-            padding: 5px 10px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            margin-left: 5px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #024d80;
-            color: white;
-            font-weight: normal;
-            cursor: pointer;
-        }
-
-        th:hover {
-            background-color: #036199;
-        }
-
-        th i {
-            margin-left: 5px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 15px;
-        }
-
-        .pagination a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-            border: 1px solid #ddd;
-            margin: 0 4px;
-        }
-
-        .pagination a.active {
-            background-color: #024d80;
-            color: white;
-            border: 1px solid #024d80;
-        }
-
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
-
-        .no-data {
+        .centered {
             text-align: center;
+        }
+
+        .disciplinary-action {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .disciplinary-action {
+            margin-top: 20px;
             padding: 15px;
-            color: #666;
-            font-style: italic;
-        }
-
-        .showing-entries {
-            margin-top: 10px;
-            color: #666;
-        }
-
-        .action-button {
-            padding: 6px 12px;
-            background-color: #024d80;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .action-button:hover {
-            background-color: #036199;
+            background-color: #f8f9fa;
+            border-left: 5px solid #003d64;
         }
     </style>
 </head>
@@ -331,76 +269,72 @@ if ($userId) {
         <a href="reservation.php"><i class="fas fa-calendar-alt"></i> RESERVATION</a>
 
         <div class="logout-section">
-            <a href="login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
+            <a href="../login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
         </div>
     </div>
     
-    <div class="content-container">
-        <div class="history-header">History Information</div>       
-        <div class="table-controls">
-            <div class="entries-select">
-                <form id="entriesForm" method="GET">
-                    <select name="entries" onchange="this.form.submit()">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                    entries per page
-                </form>
-            </div>
+    <div class="announcement-container">
+        <div class="announcement-title">
+            Announcements
+        </div>
+        <div class="announcement-content">
+            <p>There are no announcements yet.</p>
+        </div>
+    </div>
+
+    <div class="rules-container">
+        <div class="rules-title centered">
+            Rules and Regulations
+        </div>
+        <div class="rules-header centered">
+            <h1>University of Cebu</h1>
+            <h2>COLLEGE OF INFORMATION & COMPUTER STUDIES</h2>
+            <h3>LABORATORY RULES AND REGULATIONS</h3>
+        </div>
+        <div class="rules-content">
+            <p>To avoid embarrassment and maintain camaraderie with your friends and superiors at our laboratories, please observe the following:</p>
             
-            <div class="search-box">
-                <form method="GET" action="">
-                    <input type="hidden" name="entries" value="10">
-                    Search: <input type="text" name="search" value="">
-                </form>
+            <ol>
+                <li>Maintain silence, proper decorum, and discipline inside the laboratory. Mobile phones, walkmans and other personal pieces of equipment must be switched off.</li>
+                <li>Games are not allowed inside the lab. This includes computer-related games, card games and other games that may disturb the operation of the lab.</li>
+                <li>Surfing the Internet is allowed only with the permission of the instructor. Downloading and installing of software are strictly prohibited.</li>
+                <li>Getting access to other websites not related to the course (especially pornographic and illicit sites) is strictly prohibited.</li>
+                <li>Deleting computer files and changing the set-up of the computer is a major offense.</li>
+                <li>Observe computer time usage carefully. A fifteen-minute allowance is given for each use. Otherwise, the unit will be given to those who wish to "sit-in".</li>
+                <li>Observe proper decorum while inside the laboratory.
+                    <ul>
+                        <li>Do not get inside the lab unless the instructor is present.</li>
+                        <li>All bags, knapsacks, and the likes must be deposited at the counter.</li>
+                        <li>Follow the seating arrangement of your instructor.</li>
+                        <li>At the end of class, all software programs must be closed.</li>
+                        <li>Return all chairs to their proper places after using.</li>
+                    </ul>
+                </li>
+                <li>Chewing gum, eating, drinking, smoking, and other forms of vandalism are prohibited inside the lab.</li>
+                <li>Anyone causing a continual disturbance will be asked to leave the lab. Acts or gestures offensive to the members of the community, including public display of physical intimacy, are not tolerated.</li>
+                <li>Persons exhibiting hostile or threatening behavior such as yelling, swearing, or disregarding requests made by lab personnel will be asked to leave the lab.</li>
+                <li>For serious offense, the lab personnel may call the Civil Security Office (CSU) for assistance.</li>
+                <li>Any technical problem or difficulty must be addressed to the laboratory supervisor, student assistant or instructor immediately.</li>
+            </ol>
+
+            <div class="disciplinary-action">
+                <h2>DISCIPLINARY ACTION</h2>
+                <p><strong>First Offense</strong> - The Head or the Dean or OIC recommends to the Guidance Center for a suspension from classes for each offender.</p>
+                <p><strong>Second and Subsequent Offenses</strong> - A recommendation for a heavier sanction will be endorsed to the Guidance Center.</p>
             </div>
         </div>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>ID Number <i class="fas fa-sort"></i></th>
-                    <th>Name <i class="fas fa-sort"></i></th>
-                    <th>Sit Purpose <i class="fas fa-sort"></i></th>
-                    <th>Laboratory <i class="fas fa-sort"></i></th>
-                    <th>Login <i class="fas fa-sort"></i></th>
-                    <th>Logout <i class="fas fa-sort"></i></th>
-                    <th>Date <i class="fas fa-sort"></i></th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
-        
-        <div class="showing-entries">
-            Not data available
-        </div>
-        
-        <div class="pagination">
-            <a href="?page=1&entries=10&search=">&laquo;</a>
-            <a href="?page=1&entries=10&search=">&lt;</a>
-            <a href="?page=1&entries=10&search=" class="active">1</a>
-            <a href="?page=1&entries=10&search=">&gt;</a>
-            <a href="?page=1&entries=10&search=">&raquo;</a>
-        </div>
     </div>
-    
+
     <script>
         function toggleNav(x) {
-            x.classList.toggle("change");
-            document.getElementById("mySidenav").classList.toggle("show");
+        x.classList.toggle("change");
+        document.getElementById("mySidenav").classList.toggle("show");
         }
 
         function closeNav() {
             document.getElementById("mySidenav").classList.remove("show");
             document.querySelector(".container").classList.remove("change");
         }
-
-        // Auto-submit search form on input change
-        document.querySelector('.search-box input').addEventListener('input', function() {
-            this.form.submit();
-        });
     </script>
 </body>
 </html>

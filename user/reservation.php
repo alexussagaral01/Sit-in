@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db.php';
+require '../db.php';
 
 $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $firstName = isset($_SESSION['first_name']) ? $_SESSION['first_name'] : 'Guest';
@@ -13,9 +13,9 @@ if ($userId) {
     $stmt->fetch();
     $stmt->close();
     
-    $profileImage = !empty($userImage) ? 'images/' . $userImage : "images/image.jpg";
+    $profileImage = !empty($userImage) ? '../images/' . $userImage : "../images/image.jpg";
 } else {
-    $profileImage = "images/image.jpg";
+    $profileImage = "../images/image.jpg";
 }
 ?>
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ if ($userId) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="icon" href="logo/ccs.png" type="image/x-icon">
+    <link rel="icon" href="../logo/ccs.png" type="image/x-icon">
     <title>Reservation</title>
     <style>
         body {
@@ -286,6 +286,11 @@ if ($userId) {
             border-radius: 4px;
             text-align: center;
         }
+
+        .readonly-input {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -308,7 +313,7 @@ if ($userId) {
         <a href="reservation.php"><i class="fas fa-calendar-alt"></i> RESERVATION</a>
 
         <div class="logout-section">
-            <a href="login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
+            <a href="../login.php"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
         </div>
     </div>
 
@@ -317,12 +322,12 @@ if ($userId) {
         <form action="reservation.php" method="post">
             <div class="form-group">
                 <label for="id_number">ID Number:</label>
-                <input type="text" id="id_number" name="id_number" value="22680649" class="form-control">
+                <input type="text" id="id_number" name="id_number" value="22680649" class="form-control readonly-input" readonly>
             </div>
             
             <div class="form-group">
                 <label for="student_name">Student Name:</label>
-                <input type="text" id="student_name" name="student_name" value="Alexus Jamilo Sagaral" class="form-control">
+                <input type="text" id="student_name" name="student_name" value="Alexus Jamilo Sagaral" class="form-control readonly-input" readonly>
             </div>
             
             <div class="form-group">
@@ -337,17 +342,17 @@ if ($userId) {
             
             <div class="form-group">
                 <label for="time_in">Time In:</label>
-                <input type="text" id="time_in" name="time_in" placeholder="--:-- --" class="form-control">
+                <input type="time" id="time_in" name="time_in" class="form-control">
             </div>
             
             <div class="form-group">
                 <label for="date">Date:</label>
-                <input type="text" id="date" name="date" placeholder="dd/mm/yyyy" class="form-control">
+                <input type="date" id="date" name="date" class="form-control">
             </div>
             
             <div class="form-group">
                 <label for="remaining_session">Remaining Session:</label>
-                <input type="text" id="remaining_session" name="remaining_session" value="30" class="form-control">
+                <input type="text" id="remaining_session" name="remaining_session" value="30" class="form-control readonly-input" readonly>
             </div>
             
             <div class="button-group">
